@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_unnecessary_containers
+
 import 'package:flutter/material.dart';
 import 'package:flutter_my_cash/models/transaction.dart';
 import 'package:flutter_my_cash/models/tx_filter.dart';
@@ -33,7 +35,7 @@ class _MainPageState extends State<MainPage> {
               return Scaffold(
                 resizeToAvoidBottomInset: true,
                 appBar: AppBar(
-                  title: Text('Мои деньги'),
+                  title: const Text('Мои деньги'),
                   actions: [
                     Container(
                       child: Column(

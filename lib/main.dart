@@ -10,5 +10,5 @@ void main() async {
   await Hive.initFlutter(appDocumentDir.path);
   Hive.registerAdapter(TransactionAdapter());
 
-  runApp(MainPage());
+  runApp(const MainPage());
 }

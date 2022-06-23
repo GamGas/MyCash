@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_unnecessary_containers, unnecessary_cast
+
 import 'package:flutter/material.dart';
 import 'package:flutter_my_cash/models/transaction.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -28,12 +30,12 @@ class _MainBodyState extends State<MainBody> {
               Transaction? txItem = box.getAt(txIndex);
               return Card(
                 color: txItem!.isIncrement
-                    ? Color.fromARGB(255, 214, 255, 236)
-                    : Color.fromARGB(255, 255, 227, 227),
+                    ? const Color.fromARGB(255, 214, 255, 236)
+                    : const Color.fromARGB(255, 255, 227, 227),
                 margin: const EdgeInsets.only(left: 7, right: 7, top: 8),
                 elevation: 5,
                 child: Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   //height: 70,
                   child: Column(
                     children: [
