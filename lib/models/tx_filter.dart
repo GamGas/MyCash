@@ -1,14 +1,20 @@
 import 'package:intl/intl.dart';
 
 class TxFilter {
-  DateTime startDate;
-  DateTime endDate;
+  static final TxFilter _instance = TxFilter._internal();
+
+  late DateTime startDate;
+  late DateTime endDate;
+
   var dFormat = DateFormat('dd.MM.yyyy');
 
-  TxFilter({
-    required this.startDate,
-    required this.endDate,
-  });
+  factory TxFilter() {
+    return _instance;
+  }
+  TxFilter._internal() {
+    startDate = DateTime.now().subtract(const Duration(days: 365));
+    endDate = DateTime.now();
+  }
 
   @override
   String toString() {

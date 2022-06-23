@@ -15,10 +15,7 @@ class MainPage extends StatefulWidget {
 
 //MainAppBar().myAppBar
 class _MainPageState extends State<MainPage> {
-  TxFilter _txFilter = TxFilter(
-    startDate: DateTime.now().subtract(const Duration(days: 365)),
-    endDate: DateTime.now(),
-  );
+  final TxFilter _txFilter = TxFilter();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -90,10 +87,8 @@ class _MainPageState extends State<MainPage> {
         if (pickedValue == null) {
           return;
         }
-        _txFilter = TxFilter(
-          startDate: pickedValue.start,
-          endDate: pickedValue.end,
-        );
+        _txFilter.startDate = pickedValue.start;
+        _txFilter.endDate = pickedValue.end;
       });
     });
   }
