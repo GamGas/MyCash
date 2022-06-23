@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_my_cash/models/transaction.dart';
-import 'package:flutter_my_cash/widgets/main_app_bar.dart';
+import 'package:flutter_my_cash/models/tx_filter.dart';
 import 'package:flutter_my_cash/widgets/main_body.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -13,6 +13,10 @@ class MainPage extends StatefulWidget {
 
 //MainAppBar().myAppBar
 class _MainPageState extends State<MainPage> {
+  TxFilter _txFilter = TxFilter(
+    startDate: DateTime.now().subtract(const Duration(days: 365)),
+    endDate: DateTime.now(),
+  );
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -28,7 +32,25 @@ class _MainPageState extends State<MainPage> {
             } else {
               return Scaffold(
                 resizeToAvoidBottomInset: true,
-                appBar: MainAppBar().myAppBar,
+                appBar: AppBar(
+                  title: Text('Мои деньги'),
+                  actions: [
+                    Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(_txFilter.startDateString),
+                          Text(_txFilter.endDateString),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                        onPressed: () => _presentRangeFilter(context),
+                        icon: const Icon(
+                          Icons.filter_alt,
+                        ))
+                  ],
+                ),
                 body: const Center(
                   child: MainBody(),
                 ),
@@ -53,6 +75,25 @@ class _MainPageState extends State<MainPage> {
   void dispose() {
     Hive.close();
     super.dispose();
+  }
+
+  void _presentRangeFilter(BuildContext context) {
+    showDateRangePicker(
+            initialEntryMode: DatePickerEntryMode.calendarOnly,
+            context: context,
+            firstDate: _txFilter.startDate,
+            lastDate: _txFilter.endDate)
+        .then((pickedValue) {
+      setState(() {
+        if (pickedValue == null) {
+          return;
+        }
+        _txFilter = TxFilter(
+          startDate: pickedValue.start,
+          endDate: pickedValue.end,
+        );
+      });
+    });
   }
 
   void _addMockTx() async {
