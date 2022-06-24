@@ -68,7 +68,7 @@ class _ModalFormState extends State<ModalForm> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        DateFormat('dd.MM.yyyy HH:mm').format(DateTime.now()),
+                        DateFormat('dd.MM.yyyy HH:mm').format(_pickedDate),
                         style: TextStyle(fontSize: 15),
                       ),
                       OutlinedButton(
@@ -78,7 +78,7 @@ class _ModalFormState extends State<ModalForm> {
                         child: Text('Сейчас'),
                       ),
                       ElevatedButton(
-                        onPressed: () => setState(() => presentDatePicker()),
+                        onPressed: () => presentDatePicker(),
                         child: Text('Установить'),
                       )
                     ],
@@ -175,8 +175,9 @@ class _ModalFormState extends State<ModalForm> {
           pickedTime.hour,
           pickedTime.minute,
         );
-
-        _pickedDate = pDate;
+        setState(() {
+          _pickedDate = pDate;
+        });
       });
     });
   }
