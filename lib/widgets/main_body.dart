@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_my_cash/models/transaction.dart';
+import 'package:flutter_my_cash/models/tx_filter.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 
@@ -24,12 +25,23 @@ class _MainBodyState extends State<MainBody> {
               child: Text('Transactions is empty'),
             );
           }
+          List<Transaction> list = box
+              .toMap()
+              .values
+              .where((tItem) =>
+                  tItem.date.isAfter(TxFilter().startDate) &&
+                  tItem.date.isBefore(TxFilter().endDate))
+              .toList();
+          list.sort((a, b) {
+            if (a.date.isBefore(b.date)) return 0;
+            return 1;
+          });
           return ListView.builder(
-            itemCount: box.values.length,
+            itemCount: list.length,
             itemBuilder: (context, txIndex) {
-              Transaction? txItem = box.getAt(txIndex);
+              Transaction txItem = list.elementAt(txIndex);
               return Card(
-                color: txItem!.isIncrement
+                color: txItem.isIncrement
                     ? const Color.fromARGB(255, 214, 255, 236)
                     : const Color.fromARGB(255, 255, 227, 227),
                 margin: const EdgeInsets.only(left: 7, right: 7, top: 8),

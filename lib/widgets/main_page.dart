@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_my_cash/models/transaction.dart';
 import 'package:flutter_my_cash/models/tx_filter.dart';
 import 'package:flutter_my_cash/widgets/main_body.dart';
+import 'package:flutter_my_cash/widgets/modal_form.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class MainPage extends StatefulWidget {
@@ -53,8 +54,10 @@ class _MainPageState extends State<MainPage> {
                 body: const Center(
                   child: MainBody(),
                 ),
-                floatingActionButton:
-                    FloatingActionButton(onPressed: () => _addMockTx()),
+                floatingActionButton: FloatingActionButton(
+                  onPressed: () => _openNewTransactionForm(context),
+                  child: const Icon(Icons.add),
+                ),
               );
             }
           } else {
@@ -76,33 +79,42 @@ class _MainPageState extends State<MainPage> {
     super.dispose();
   }
 
+  void _openNewTransactionForm(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return ModalForm();
+        });
+  }
+
   void _presentRangeFilter(BuildContext context) {
     showDateRangePicker(
             initialEntryMode: DatePickerEntryMode.calendarOnly,
             context: context,
-            firstDate: _txFilter.startDate,
-            lastDate: _txFilter.endDate)
+            firstDate: DateTime(2022, 1, 1),
+            lastDate: DateTime.now())
         .then((pickedValue) {
       setState(() {
         if (pickedValue == null) {
           return;
         }
         _txFilter.startDate = pickedValue.start;
-        _txFilter.endDate = pickedValue.end;
+        _txFilter.endDate = pickedValue.end
+            .subtract(const Duration(hours: -23, minutes: -59, seconds: -59));
       });
     });
   }
 
-  void _addMockTx() async {
-    await Hive.openBox<Transaction>('tx_box').then((txBox) {
-      setState(() {
-        txBox.add(Transaction(
-          'Чаевые',
-          true,
-          250.00,
-          DateTime.now(),
-        ));
-      });
-    });
-  }
+  // void _addMockTx() async {
+  //   await Hive.openBox<Transaction>('tx_box').then((txBox) {
+  //     setState(() {
+  //       txBox.add(Transaction(
+  //         'Чаевые',
+  //         true,
+  //         250.00,
+  //         DateTime.now(),
+  //       ));
+  //     });
+  //   });
+  // }
 }
