@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="io.github.gamgas.flutter_my_cache">
    <application
-        android:label="flutter_my_cache"
+        android:label="Мои деньги"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

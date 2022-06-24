@@ -22,7 +22,7 @@ class _MainBodyState extends State<MainBody> {
         builder: (BuildContext context, Box<Transaction> box, _) {
           if (box.values.isEmpty) {
             return const Center(
-              child: Text('Transactions is empty'),
+              child: Text('Нет операций.'),
             );
           }
           List<Transaction> list = box

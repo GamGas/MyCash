@@ -5,6 +5,7 @@ class TxFilter {
 
   late DateTime startDate;
   late DateTime endDate;
+  bool filterActive = false;
 
   var dFormat = DateFormat('dd.MM.yyyy');
 

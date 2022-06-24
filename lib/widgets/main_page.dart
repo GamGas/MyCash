@@ -17,6 +17,7 @@ class MainPage extends StatefulWidget {
 //MainAppBar().myAppBar
 class _MainPageState extends State<MainPage> {
   final TxFilter _txFilter = TxFilter();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -36,19 +37,32 @@ class _MainPageState extends State<MainPage> {
                   title: const Text('Мои деньги'),
                   actions: [
                     Container(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(_txFilter.startDateString),
-                          Text(_txFilter.endDateString),
-                        ],
-                      ),
+                      child: _txFilter.filterActive
+                          ? Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(_txFilter.startDateString),
+                                Text(_txFilter.endDateString),
+                              ],
+                            )
+                          : Column(),
                     ),
-                    IconButton(
-                        onPressed: () => _presentRangeFilter(context),
-                        icon: const Icon(
-                          Icons.filter_alt,
-                        ))
+                    _txFilter.filterActive
+                        ? IconButton(
+                            onPressed: () => setState(() {
+                                  _txFilter.startDate = DateTime.now()
+                                      .subtract(const Duration(days: 365));
+                                  _txFilter.endDate = DateTime.now();
+                                  _txFilter.filterActive = false;
+                                }),
+                            icon: const Icon(
+                              Icons.filter_alt_off,
+                            ))
+                        : IconButton(
+                            onPressed: () => _presentRangeFilter(context),
+                            icon: const Icon(
+                              Icons.filter_alt,
+                            )),
                   ],
                 ),
                 body: const Center(
@@ -101,20 +115,8 @@ class _MainPageState extends State<MainPage> {
         _txFilter.startDate = pickedValue.start;
         _txFilter.endDate = pickedValue.end
             .subtract(const Duration(hours: -23, minutes: -59, seconds: -59));
+        _txFilter.filterActive = true;
       });
     });
   }
-
-  // void _addMockTx() async {
-  //   await Hive.openBox<Transaction>('tx_box').then((txBox) {
-  //     setState(() {
-  //       txBox.add(Transaction(
-  //         'Чаевые',
-  //         true,
-  //         250.00,
-  //         DateTime.now(),
-  //       ));
-  //     });
-  //   });
-  // }
 }

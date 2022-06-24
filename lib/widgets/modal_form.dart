@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_my_cash/models/transaction.dart';
+import 'package:flutter_my_cash/models/tx_filter.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
@@ -152,6 +153,7 @@ class _ModalFormState extends State<ModalForm> {
 
     var newTx = Transaction(txTitle, isIncrement, amount, date);
     txBox.add(newTx);
+    TxFilter().endDate = DateTime.now();
     Navigator.pop(context);
   }
 
